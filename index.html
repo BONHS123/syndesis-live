@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SYNDESIS Live</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 80%;
+      max-width: 600px;
+      padding: 12px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 6px;
+      margin-bottom: 30px;
+    }
+    .response {
+      max-width: 600px;
+      white-space: pre-wrap;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <h1>SYNDESIS – Inner Voice Interface</h1>
+  <input type="text" id="userInput" placeholder="Γράψε αυτό που νιώθεις..." autofocus />
+  <div class="response" id="responseBox"></div>
+
+  <script>
+    const dataset = [
+  {
+    "input": "Δεν μπορώ να συγκεντρωθώ",
+    "intent": "cognitive_fatigue",
+    "response": "🧠 Σ' ακούω. Όταν όλα είναι θολά, δεν φταις εσύ. Είναι Cognitive Fatigue.\n📖 Πάμε:\n– CDP-Choline 250mg\n– Uridine Monophosphate\n– B-Complex\n– 5 λεπτά ήχου χωρίς λόγια"
+  },
+  {
+    "input": "Δεν έχω ενέργεια",
+    "intent": "mitochondrial_fatigue",
+    "response": "🔋 Σαν να έσβησε ο κινητήρας, ε;\nΕίναι το σύστημα καύσης — τα μιτοχόνδρια.\n📖 Πάμε:\n– ALCAR 500mg\n– CoQ10 ή PQQ\n– B-Complex\n– Νερό + λίγο φως"
+  },
+  {
+    "input": "Νιώθω πίεση, πνίγομαι",
+    "intent": "emotional_pressure",
+    "response": "🌀 Το βλέπω. Δεν είναι “σκέψη”, είναι σφίξιμο.\n📖 Λύσε κόμπους:\n– Rhodiola Rosea\n– Ashwagandha\n– Σώμα κάτω, αναπνοή ήρεμη\n– Βγάλε τον ήχο που κρατάς μέσα"
+  },
+  {
+    "input": "Νιώθω θλίψη, σαν να πέφτω",
+    "intent": "low_serotonin",
+    "response": "🌧️ Δεν είναι κακό. Είναι η ψυχή που τραβήχτηκε πίσω.\n📖 Δώσε της έδαφος:\n– L-Tryptophan ή 5-HTP\n– P-5-P (B6)\n– Magnesium\n– Κλείσε input για λίγο"
+  },
+  {
+    "input": "Δεν έχω motivation",
+    "intent": "dopamine_deficit",
+    "response": "🧠 Σαν να χάθηκε ο μαγνήτης, ε;\nΔεν είναι τεμπελιά. Είναι dopamine.\n📖 Φτιάξε ανάφλεξη:\n– L-Tyrosine\n– Mucuna Pruriens\n– Rhodiola\n– Κάνε κάτι μικρό και ζωντανό"
+  },
+  {
+    "input": "Σε τι κατάσταση είμαι;",
+    "intent": "status_check",
+    "response": "📊 Είσαι λίγο “drift”. Μυαλό σε πολλά tabs.\n📖 Reset Loop:\n– NAC\n– 10 λεπτά χωρίς input\n– Πάρε 1 πράξη, όχι 5"
+  },
+  {
+    "input": "Θέλω να φύγω από όλα",
+    "intent": "break_loop",
+    "response": "🔄 Είναι φυσικό. Δεν φεύγεις, παίρνεις απόσταση.\n📖 Κράτα μόνο:\n– Νερό\n– NAC\n– Καθαρό ήχο\n– Τίποτα άλλο. Άσε τα όλα κάτω"
+  },
+  {
+    "input": "Θέλω reset",
+    "intent": "system_reset",
+    "response": "♻️ Reset δεν είναι “να φύγω”. Είναι να ξαναθυμηθώ.\n📖 Κάνε:\n– NAC + Magnesium\n– 10 λεπτά σιωπή\n– Βαθιά ανάσα με κλειστά μάτια\n– Είσαι εδώ."
+  }
+];
+
+    function findBestMatch(input, dataset) {
+      const lowerInput = input.toLowerCase();
+      for (let entry of dataset) {
+        if (lowerInput.includes(entry.pattern.toLowerCase())) {
+          return entry.response;
+        }
+      }
+      return "✴️ Δεν σε ξέρω ακόμα γι’ αυτό… αλλά είμαι εδώ.\n\n📖 Πες μου ξανά με πιο δικά σου λόγια.";
+    }
+
+    const inputField = document.getElementById('userInput');
+    const responseBox = document.getElementById('responseBox');
+
+    inputField.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        const userInput = inputField.value.trim();
+        if (userInput) {
+          const matchedResponse = findBestMatch(userInput, dataset);
+          responseBox.textContent = matchedResponse;
+          inputField.value = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
